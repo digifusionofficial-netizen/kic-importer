@@ -1,0 +1,19 @@
+@media (min-width: 768px) and (max-width: 1199px) {
+  h1 { font-size: 48px; }
+  .hero, .services-grid, .features-grid, .faq, .contact-section, .content-section, .image-text, .cta { padding: var(--section-space-tablet) 0; }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  h1 { font-size: 40px; } h2 { font-size: 31px; }
+  .hero, .services-grid, .features-grid, .faq, .contact-section, .content-section, .image-text, .cta { padding: var(--section-space-mobile) 0; }
+  .header-inner { flex-wrap: wrap; min-height: 72px; padding: 12px 0; }
+  .nav-toggle { display: inline-flex; }
+  .primary-nav { width: 100%; }
+  .js .primary-nav[hidden] { display: none; }
+  [data-menu] ul { flex-direction: column; gap: 12px; padding: 10px 0; }
+  .header-actions { display: none; }
+  .hero-inner, .image-text__inner, .contact-layout, .grid-2, .grid-3, .footer-inner { grid-template-columns: 1fr; }
+  .hero-inner { gap: 34px; }
+  .cta-inner { align-items: flex-start; flex-direction: column; }
+  .footer-legal { grid-column: auto; }
+}

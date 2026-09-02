@@ -1,0 +1,7 @@
+{
+  "contract_version":"KIC-1.0","target":"wp-kadence-importer",
+  "site":{"name":"Fixture Site","language":"en-US","homepage":"index.html"},
+  "design":{"colors":{"primary":"#123456","secondary":"#F2B705","accent":"#1A73E8","text":"#222222","heading":"#111111","background":"#FFFFFF","surface":"#F7F7F7","border":"#E5E5E5"},"typography":{"heading_font":"Arial","body_font":"Arial","base_font_size_px":16,"body_line_height":1.6},"layout":{"container_width_px":1200,"content_width_px":800,"tablet_max_px":1199,"mobile_max_px":767},"spacing":{"section_desktop_px":96,"section_tablet_px":72,"section_mobile_px":48},"radii":{"small_px":6,"medium_px":12,"large_px":24}},
+  "pages":[{"file":"index.html","title":"Home","slug":"/","template":"full-width","menu_order":0,"seo":{"title":"Fixture Site","description":"Complete KIC fixture.","canonical_path":"/","robots":"index,follow","og_title":"Fixture Site","og_description":"Complete KIC fixture."}}],
+  "menus":{"primary":[{"label":"Home","page_slug":"/"}],"footer":[]},"forms":[],"placeholders":{},"redirects":[]
+}

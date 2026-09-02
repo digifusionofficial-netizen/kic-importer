@@ -1,0 +1,20 @@
+{
+  "contract_version": "KIC-1.0",
+  "target": "wp-kadence-importer",
+  "site": {"name":"ClearPath Bookkeeping","language":"en-US","homepage":"index.html"},
+  "design": {
+    "colors": {"primary":"#173B57","secondary":"#E9B949","accent":"#2B7A78","text":"#334155","heading":"#102A43","background":"#FFFFFF","surface":"#F4F7F9","border":"#D7E0E7"},
+    "typography": {"heading_font":"Arial","body_font":"Arial","base_font_size_px":16,"body_line_height":1.6},
+    "layout": {"container_width_px":1160,"content_width_px":760,"tablet_max_px":1199,"mobile_max_px":767},
+    "spacing": {"section_desktop_px":84,"section_tablet_px":64,"section_mobile_px":44},
+    "radii": {"small_px":6,"medium_px":12,"large_px":24}
+  },
+  "pages": [{
+    "file":"index.html","title":"Home","slug":"/","template":"full-width","menu_order":0,
+    "seo": {"title":"ClearPath Bookkeeping | Practical Bookkeeping Support","description":"Learn about ClearPath Bookkeeping services and send a bookkeeping enquiry.","canonical_path":"/","robots":"index,follow","og_title":"ClearPath Bookkeeping","og_description":"Practical bookkeeping service information for business owners.","og_image":"assets/images/og-home.png"}
+  }],
+  "menus": {"primary":[{"label":"Home","page_slug":"/"}],"footer":[{"label":"Home","page_slug":"/"}]},
+  "forms": [{"id":"clearpath-contact","type":"contact","recipient":"site-admin","success_message":"Thanks. Your enquiry has been sent."}],
+  "placeholders": {"PHONE":"Business phone number required","EMAIL":"Business email required","ADDRESS":"Business address required","SERVICE_AREA":"Confirmed service area required","BUSINESS_HOURS":"Business hours required"},
+  "redirects": []
+}
