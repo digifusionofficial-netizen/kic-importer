@@ -151,7 +151,14 @@ final class KadenceCoreAdapter implements AdapterInterface
             $attributes = $this->mapper->imageAttributes($styles, $uniqueId, $element->getAttribute('src'), $element->getAttribute('alt'), (int) $element->getAttribute('width'), (int) $element->getAttribute('height'));
             if ($element->hasAttribute('srcset')) { $attributes['srcSet'] = $element->getAttribute('srcset'); }
             $srcset = $element->hasAttribute('srcset') ? ' srcset="' . esc_attr($element->getAttribute('srcset')) . '"' : '';
-            return '<!-- wp:kadence/image ' . wp_json_encode($attributes) . ' --><figure class="wp-block-kadence-image kb-image' . esc_attr($uniqueId) . ' size-full"><img src="' . esc_url($element->getAttribute('src')) . '"' . $srcset . ' alt="' . esc_attr($element->getAttribute('alt')) . '" class="kb-img" width="' . (int) $element->getAttribute('width') . '" height="' . (int) $element->getAttribute('height') . '"/></figure><!-- /wp:kadence/image -->' . "\n";
+            // The src is our own package's local relative path (e.g. "assets/images/logo.png",
+            // no leading slash, per the header contract's own example) awaiting rewrite to its
+            // permanent Media Library URL by AssetUrlRewriter over the rendered page content.
+            // esc_url() would treat a bare relative path with no leading "/" as a "scheme-less
+            // host" and silently prepend "http://" (e.g. "http://assets/images/logo.png"), which
+            // then looks remote to AssetUrlRewriter and never gets rewritten. esc_attr() only
+            // escapes for safe HTML-attribute embedding without touching the URL's structure.
+            return '<!-- wp:kadence/image ' . wp_json_encode($attributes) . ' --><figure class="wp-block-kadence-image kb-image' . esc_attr($uniqueId) . ' size-full"><img src="' . esc_attr($element->getAttribute('src')) . '"' . $srcset . ' alt="' . esc_attr($element->getAttribute('alt')) . '" class="kb-img" width="' . (int) $element->getAttribute('width') . '" height="' . (int) $element->getAttribute('height') . '"/></figure><!-- /wp:kadence/image -->' . "\n";
         }
         if ($tag === 'ul' || $tag === 'ol') {
             return '<!-- wp:list {"ordered":' . ($tag === 'ol' ? 'true' : 'false') . '} --><' . $tag . '>' . wp_kses_post($this->innerHtml($element)) . '</' . $tag . '><!-- /wp:list -->' . "\n";
