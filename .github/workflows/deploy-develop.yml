@@ -1,0 +1,52 @@
+name: Deploy Plugin to Staging
+
+on:
+  push:
+    branches:
+      - develop
+
+# Prevents two overlapping deploys if you push twice quickly.
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.STAGING_PORT }}" "${{ secrets.STAGING_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy plugin files
+        run: |
+          rsync -avz --delete \
+            --include="kic-importer.php" \
+            --include="uninstall.php" \
+            --include="README.md" \
+            --include="src/***" \
+            --include="assets/***" \
+            --include="templates/***" \
+            --include="*/" \
+            --exclude="*" \
+            -e "ssh -p ${{ secrets.STAGING_PORT }} -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes" \
+            ./ \
+            "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:${{ secrets.STAGING_PLUGIN_PATH }}"
+
+      # Optional: only runs if you also set the STAGING_WP_PATH secret
+      # (the WordPress root, not the plugin folder) and WP-CLI is
+      # installed on the host. Safe to leave STAGING_WP_PATH unset.
+      - name: Reactivate plugin and flush cache (optional)
+        env:
+          STAGING_WP_PATH: ${{ secrets.STAGING_WP_PATH }}
+        if: ${{ env.STAGING_WP_PATH != '' }}
+        run: |
+          ssh -p "${{ secrets.STAGING_PORT }}" -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes \
+            "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}" \
+            "cd '$STAGING_WP_PATH' && wp plugin activate kic-importer && wp cache flush" || true
