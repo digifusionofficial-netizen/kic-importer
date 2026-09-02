@@ -23,6 +23,25 @@ final class CombinedCssCompilerTest extends TestCase
         self::assertSame(4, $result['rules']);
     }
 
+    public function testAsymmetricGridDoesNotNestOnKadencesOuterRowWrapper(): void
+    {
+        // Regression test: a rule that establishes an asymmetric grid (e.g. a
+        // hero split) must apply ONLY to Kadence's inner .kt-row-column-wrap,
+        // never also to the bare source-class selector. Kadence's own DOM puts
+        // that class on the OUTER row wrapper, one level above the wrapper that
+        // actually holds the grid children; applying the same grid-template
+        // there too creates a second, incorrectly-nested grid around Kadence's
+        // single wrapped child, corrupting the intended column split (observed
+        // live as an empty first column and a doubly-shrunk second column).
+        $result = (new CombinedCssCompiler())->compile(array(
+            'assets/css/components.css' => '.hero-inner{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:56px}',
+        ), 'kic-site-7');
+        self::assertStringContainsString('.kic-site-7 .kic-src-hero-inner > .kt-row-column-wrap', $result['css']);
+        self::assertMatchesRegularExpression('/\.kt-row-column-wrap\{[^}]*grid-template-columns:1\.2fr \.8fr/', $result['css']);
+        self::assertDoesNotMatchRegularExpression('/\.kic-src-hero-inner\{[^}]*grid-template-columns/', $result['css']);
+        self::assertDoesNotMatchRegularExpression('/\.kic-src-hero-inner,[^{]*\{[^}]*display:grid/', $result['css']);
+    }
+
     public function testSanitizesImportsAndRejectsExecutableCss(): void
     {
         $safe = (new CombinedCssCompiler())->compile(array('global.css' => '@import url("https://bad.test/x.css");p{color:red}'), 'kic-site-1');

@@ -60,7 +60,9 @@ final class CombinedCssCompiler
             } elseif (str_starts_with($header, '@')) {
                 $out .= '/* KIC omitted unsupported at-rule: ' . preg_replace('/[^a-z0-9@_-]/i', '', $header) . ' */';
             } else {
-                $selectors = array();
+                $hasLayout = (bool) preg_match('/(?:display\s*:\s*(?:grid|flex)|grid-template-columns|flex-direction|justify-content|align-items|\bgap\s*:)/i', $body);
+                $bareSelectors = array();
+                $childSelectors = array();
                 foreach (explode(',', $header) as $selector) {
                     $selector = trim($selector);
                     if ($selector === '') { continue; }
@@ -68,25 +70,56 @@ final class CombinedCssCompiler
                     $selector = preg_replace('/\[data-menu(?:=[^\]]+)?\]/i', '.kic-menu', $selector) ?? $selector;
                     $selector = preg_replace('/(^|[\s>+~])(html|body|:root)(?=\b|\s|[>+~.:#\[])/i', '$1', $selector) ?? $selector;
                     $selector = trim($selector);
-                    $selectors[] = $selector === '' ? $scope : $scope . ' ' . $selector;
-                    if (str_starts_with($selector, '.')) { $selectors[] = $scope . $selector; }
-                    if (str_contains($selector, '.kic-src-button')) {
-                        $selectors[] = ($selector === '' ? $scope : $scope . ' ' . $selector) . ' .kb-button';
-                    }
-                    if (preg_match('/(?:display\s*:\s*(?:grid|flex)|grid-template-columns|flex-direction|justify-content|align-items|\bgap\s*:)/i', $body)) {
-                        $selectors[] = ($selector === '' ? $scope : $scope . ' ' . $selector) . ' > .kt-inside-inner-col';
-                        $selectors[] = ($selector === '' ? $scope : $scope . ' ' . $selector) . ' > .kt-row-column-wrap';
+                    $base = $selector === '' ? $scope : $scope . ' ' . $selector;
+                    $bareSelectors[] = $base;
+                    if (str_starts_with($selector, '.')) { $bareSelectors[] = $scope . $selector; }
+                    if (str_contains($selector, '.kic-src-button')) { $bareSelectors[] = $base . ' .kb-button'; }
+                    if ($hasLayout) {
+                        $childSelectors[] = $base . ' > .kt-inside-inner-col';
+                        $childSelectors[] = $base . ' > .kt-row-column-wrap';
                         if (str_starts_with($selector, '.')) {
-                            $selectors[] = $scope . $selector . ' > .kt-inside-inner-col';
-                            $selectors[] = $scope . $selector . ' > .kt-row-column-wrap';
+                            $childSelectors[] = $scope . $selector . ' > .kt-inside-inner-col';
+                            $childSelectors[] = $scope . $selector . ' > .kt-row-column-wrap';
                         }
                     }
                 }
-                if ($selectors) { $out .= implode(',', array_unique($selectors)) . '{' . $body . '}'; $count++; }
+                if ($hasLayout) {
+                    // The source class (e.g. ".hero-inner") lives on Kadence's
+                    // OUTER row/column wrapper, but the actual grid/flex children
+                    // live one level down inside its .kt-row-column-wrap or
+                    // .kt-inside-inner-col. Applying display/grid-template-columns
+                    // etc. to the outer wrapper AS WELL would establish a second,
+                    // incorrectly-nested layout context around Kadence's own single
+                    // wrapped child, corrupting the intended column split. So
+                    // layout-establishing declarations go ONLY on the child
+                    // selectors; any other declarations in the same rule still
+                    // apply to the source selector directly.
+                    if ($childSelectors) { $out .= implode(',', array_unique($childSelectors)) . '{' . $body . '}'; }
+                    $remaining = $this->stripLayoutDeclarations($body);
+                    if ($bareSelectors && trim($remaining) !== '') { $out .= implode(',', array_unique($bareSelectors)) . '{' . $remaining . '}'; }
+                    $count++;
+                } elseif ($bareSelectors) {
+                    $out .= implode(',', array_unique($bareSelectors)) . '{' . $body . '}';
+                    $count++;
+                }
             }
             $offset = $close + 1;
         }
         return $out;
+    }
+
+    /** Removes grid/flex layout-establishing declarations, keeping any other declarations in the same rule intact. */
+    private function stripLayoutDeclarations(string $body): string
+    {
+        $kept = array();
+        foreach (explode(';', $body) as $declaration) {
+            $trimmed = trim($declaration);
+            if ($trimmed === '') { continue; }
+            if (preg_match('/^display\s*:\s*(grid|flex)\b/i', $trimmed)) { continue; }
+            if (preg_match('/^(grid-template-columns|grid-template-rows|flex-direction|flex-wrap|justify-content|align-items|gap|row-gap|column-gap)\s*:/i', $trimmed)) { continue; }
+            $kept[] = $trimmed;
+        }
+        return $kept ? implode(';', $kept) . ';' : '';
     }
 
     private function matchingBrace(string $css, int $open): ?int
