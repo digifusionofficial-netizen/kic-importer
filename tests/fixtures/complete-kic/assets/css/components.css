@@ -1,0 +1,1 @@
+.hero{padding:96px 0;background-color:var(--color-surface)}.hero h1{color:var(--color-heading);font-size:52px;line-height:1.1}.grid{display:grid;gap:24px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-card{padding:24px;border:1px solid var(--color-border);border-radius:12px;box-shadow:0 8px 24px #0000001a}.site-header,.footer-inner{padding:24px}

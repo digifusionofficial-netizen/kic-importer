@@ -1,0 +1,15 @@
+@media (min-width: 768px) and (max-width: 1199px) {
+  h1 { font-size: 46px; }
+  .hero, .services-grid, .features-grid, .content-section, .faq, .contact-section, .cta { padding: var(--section-space-tablet) 0; }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  h1 { font-size: 38px; } h2 { font-size: 30px; }
+  .hero, .services-grid, .features-grid, .content-section, .faq, .contact-section, .cta { padding: var(--section-space-mobile) 0; }
+  .header-inner { flex-wrap: wrap; min-height: 70px; padding: 14px 0; }
+  .header-actions { width: 100%; }
+  .hero-inner, .grid-2, .grid-3, .contact-layout, .footer-inner { grid-template-columns: 1fr; }
+  .hero-inner { gap: 32px; }
+  .cta-inner { align-items: flex-start; flex-direction: column; }
+  .footer-legal { grid-column: auto; }
+}

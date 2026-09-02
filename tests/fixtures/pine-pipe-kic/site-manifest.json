@@ -1,0 +1,24 @@
+{
+  "contract_version": "KIC-1.0",
+  "target": "wp-kadence-importer",
+  "site": {"name": "Pine & Pipe Plumbing", "language": "en-US", "homepage": "index.html"},
+  "design": {
+    "colors": {"primary": "#163A32", "secondary": "#D9B96E", "accent": "#C65D3B", "text": "#33413D", "heading": "#102A24", "background": "#FFFFFF", "surface": "#F5F1E8", "border": "#D8DDD9"},
+    "typography": {"heading_font": "Georgia", "body_font": "Arial", "base_font_size_px": 16, "body_line_height": 1.6},
+    "layout": {"container_width_px": 1180, "content_width_px": 760, "tablet_max_px": 1199, "mobile_max_px": 767},
+    "spacing": {"section_desktop_px": 88, "section_tablet_px": 64, "section_mobile_px": 44},
+    "radii": {"small_px": 6, "medium_px": 14, "large_px": 28}
+  },
+  "pages": [
+    {"file":"index.html","title":"Home","slug":"/","template":"full-width","menu_order":0,"seo":{"title":"Pine & Pipe Plumbing | Home","description":"Learn about the residential plumbing services offered by Pine & Pipe Plumbing.","canonical_path":"/","robots":"index,follow","og_title":"Pine & Pipe Plumbing","og_description":"Residential plumbing service information and contact options.","og_image":"assets/images/og-home.png"}},
+    {"file":"pages/services.html","title":"Services","slug":"/services/","template":"full-width","menu_order":1,"seo":{"title":"Plumbing Services | Pine & Pipe Plumbing","description":"View emergency repair, drain, and water heater service information.","canonical_path":"/services/","robots":"index,follow","og_title":"Plumbing Services | Pine & Pipe Plumbing","og_description":"Clear information about available residential plumbing service categories.","og_image":"assets/images/og-services.png"}},
+    {"file":"pages/contact.html","title":"Contact","slug":"/contact/","template":"full-width","menu_order":2,"seo":{"title":"Contact | Pine & Pipe Plumbing","description":"Send a service question to Pine & Pipe Plumbing using the contact form.","canonical_path":"/contact/","robots":"index,follow","og_title":"Contact | Pine & Pipe Plumbing","og_description":"Use the contact form to ask about plumbing service availability.","og_image":"assets/images/og-contact.png"}}
+  ],
+  "menus": {
+    "primary": [{"label":"Home","page_slug":"/"},{"label":"Services","page_slug":"/services/"},{"label":"Contact","page_slug":"/contact/"}],
+    "footer": [{"label":"Home","page_slug":"/"},{"label":"Services","page_slug":"/services/"},{"label":"Contact","page_slug":"/contact/"}]
+  },
+  "forms": [{"id":"contact-main","type":"contact","recipient":"site-admin","success_message":"Thanks. Your message has been sent."}],
+  "placeholders": {"PHONE":"Business phone number required","EMAIL":"Business email required","ADDRESS":"Business address required","SERVICE_AREA":"Confirmed service area required","BUSINESS_HOURS":"Business hours required"},
+  "redirects": []
+}

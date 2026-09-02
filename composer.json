@@ -13,6 +13,12 @@
       "KIC\\Importer\\Tests\\": "tests/"
     }
   },
+  "require": {
+    "php": ">=8.0",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-zip": "*"
+  },
   "require-dev": {
     "phpunit/phpunit": "^9.6 || ^10.5"
   },

@@ -35,6 +35,10 @@ final class KicContract
         'info-box', 'contact-form', 'icon-list', 'button-group', 'embed',
     );
 
+    public const MAX_ARCHIVE_BYTES = 104857600;
+    public const MAX_FILES = 2000;
+    public const MAX_UNCOMPRESSED_BYTES = 524288000;
+
     private function __construct()
     {
     }

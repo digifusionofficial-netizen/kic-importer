@@ -12,6 +12,13 @@ final class ValidationResult
         $this->errors[] = $issue;
     }
 
+    public function merge(self $other): void
+    {
+        foreach ($other->errors() as $issue) {
+            $this->addError($issue);
+        }
+    }
+
     public function passed(): bool
     {
         return $this->errors === array();

@@ -1,0 +1,32 @@
+:root {
+  --color-primary: #163A32; --color-secondary: #D9B96E; --color-accent: #C65D3B;
+  --color-text: #33413D; --color-heading: #102A24; --color-background: #FFFFFF;
+  --color-surface: #F5F1E8; --color-border: #D8DDD9;
+  --font-heading: Georgia, serif; --font-body: Arial, sans-serif;
+  --base-font-size: 16px; --body-line-height: 1.6;
+  --container-width: 1180px; --content-width: 760px;
+  --section-space-desktop: 88px; --section-space-tablet: 64px; --section-space-mobile: 44px;
+  --radius-small: 6px; --radius-medium: 14px; --radius-large: 28px; --space-grid: 24px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--color-text); background: var(--color-background); font-family: var(--font-body); font-size: var(--base-font-size); line-height: var(--body-line-height); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--color-primary); }
+h1, h2, h3 { margin: 0 0 16px; color: var(--color-heading); font-family: var(--font-heading); line-height: 1.15; }
+h1 { font-size: 56px; } h2 { font-size: 38px; } h3 { font-size: 24px; }
+p { margin: 0 0 20px; }
+.container { width: min(100% - 40px, var(--container-width)); margin-inline: auto; }
+.content-width { max-width: var(--content-width); }
+.grid { display: grid; gap: var(--space-grid); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.section-header { max-width: var(--content-width); margin-bottom: 40px; }
+.eyebrow { color: var(--color-accent); font-size: 14px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 11px 20px; border: 2px solid transparent; border-radius: var(--radius-small); font-weight: 700; text-decoration: none; }
+.button-primary { color: #FFFFFF; background: var(--color-primary); }
+.button-secondary { color: var(--color-heading); background: var(--color-secondary); }
+.button-outline { color: var(--color-primary); border-color: var(--color-primary); background: transparent; }
+:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 3px; }
+.skip-link { position: absolute; left: 12px; top: 12px; transform: translateY(-150%); padding: 10px; color: #FFFFFF; background: var(--color-primary); z-index: 10; }
+.skip-link:focus { transform: translateY(0); }
